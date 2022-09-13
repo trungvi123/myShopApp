@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:myshop/ui/products/product_detail_screen.dart';
 import 'package:myshop/ui/products/products_manager.dart';
+import 'ui/products/products_overview_screen.dart';
+import 'ui/products/user_products_screen.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key?key}) : super (key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +24,9 @@ class MyApp extends StatelessWidget {
           secondary: Colors.deepOrange,
         ),
       ),
-      home:  SafeArea(
-        child:ProductDetailScreen(
-          ProductsManager().items[0],
-        ),
+      home: SafeArea(
+        child: UserProductsScreen(),
       ),
     );
   }
 }
-
