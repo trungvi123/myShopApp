@@ -19,12 +19,10 @@ class UserProductListTile extends StatelessWidget {
       ),
       trailing: SizedBox(
         width: 100,
-        child: Row(
-          children: <Widget>[
-            buildEditButton(context),
-            buildDeleteButton(context),
-          ],
-        ),
+        child: Row(children: <Widget>[
+          buildEditButton(context),
+          buildDeleteButton(context),
+        ]),
       ),
     );
   }
@@ -33,7 +31,7 @@ class UserProductListTile extends StatelessWidget {
     return IconButton(
       icon: const Icon(Icons.delete),
       onPressed: () async {
-        print('Delete a product');
+        print('Delete  a product');
       },
       color: Theme.of(context).errorColor,
     );
@@ -42,7 +40,7 @@ class UserProductListTile extends StatelessWidget {
   Widget buildEditButton(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.edit),
-      onPressed: () {
+      onPressed: () async {
         print('Go to edit product screen');
       },
       color: Theme.of(context).primaryColor,
