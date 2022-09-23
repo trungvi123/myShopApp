@@ -16,7 +16,8 @@ class ProductDetailScreen extends StatelessWidget {
           title: Text(product.title),
         ),
         body: SingleChildScrollView(
-          child: Column(children: <Widget>[
+          child: Column(
+            children: <Widget>[
             SizedBox(
               height: 300,
               width: double.infinity,
