@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'user_product_list_tile.dart';
 import 'products_manager.dart';
@@ -12,7 +13,7 @@ class UserProductsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productsMananger = ProductsManager();
+    // final productsMananger = ProductsManager();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your products'),
@@ -23,22 +24,26 @@ class UserProductsScreen extends StatelessWidget {
       drawer: const AppDrawer(),
       body: RefreshIndicator(
         onRefresh: () async => print('Refresh Products'),
-        child: buildUserProductListView(productsMananger),
+        child: buildUserProductListView(),
       ),
     );
   }
 
-  Widget buildUserProductListView(ProductsManager productsMananger) {
-    return ListView.builder(
-      itemCount: productsMananger.itemCount,
-      itemBuilder: (ctx, i) => Column(
-        children: [
-          UserProductListTile(
-            productsMananger.items[i],
+  Widget buildUserProductListView() {
+    return Consumer<ProductsManager>(
+      builder: (ctx, productsManager, child) {
+        return ListView.builder(
+          itemCount: productsManager.itemCount,
+          itemBuilder: (ctx, i) => Column(
+            children: [
+              UserProductListTile(
+                productsManager.items[i],
+              ),
+              const Divider(),
+            ],
           ),
-          const Divider(),
-        ],
-      ),
+        );
+      },
     );
   }
 
