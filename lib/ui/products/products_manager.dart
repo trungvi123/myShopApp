@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
 
+import '../../models/auth_token.dart';
 import '../../models/product.dart';
+import '../../services/products_service.dart';
 
-class ProductsManager with ChangeNotifier{
-  final List<Product> _items = [
+class ProductsManager with ChangeNotifier {
+  List<Product> _items = [
     // Product(
     //   id: 'p1',
     //   title: 'Red Shirt',
@@ -40,8 +42,22 @@ class ProductsManager with ChangeNotifier{
     // ),
   ];
 
+  final ProductsService _productsService;
+
+  ProductsManager([AuthToken? authToken])
+      : _productsService = ProductsService(authToken);
+
+  set authToken(AuthToken? authToken) {
+    _productsService.authToken = authToken;
+  }
+
   Product findById(String id) {
     return _items.firstWhere((prod) => prod.id == id);
+  }
+
+  Future<void> fetchProducts([bool filterByUser = false]) async {
+    _items = await _productsService.fetchProducts(filterByUser);
+    notifyListeners();
   }
 
   int get itemCount {
@@ -60,36 +76,30 @@ class ProductsManager with ChangeNotifier{
     return _items.firstWhere((prod) => prod.id == id);
   }
 
-  void addProduct(Product product){
-    _items.add(
-      product.copyWith(
-        id: 'p${DateTime.now().toIso8601String()}',
-      ),
-    );
-    notifyListeners();
+  Future<void> addProduct(Product product) async {
+    final newProduct = await _productsService.addProduct(product);
+    if (newProduct != null) {
+      _items.add(newProduct);
+      notifyListeners();
+    }
   }
 
-  void updateProduct(Product product){
+  void updateProduct(Product product) {
     final index = _items.indexWhere((element) => element.id == product.id);
-    if(index >= 0){
+    if (index >= 0) {
       _items[index] = product;
       notifyListeners();
     }
   }
 
-
-  void toggleFavoriteStatus(Product product){
+  void toggleFavoriteStatus(Product product) {
     final savedStatus = product.isFavorite;
     product.isFavorite = !savedStatus;
   }
 
-  void deleteProduct(String id){
+  void deleteProduct(String id) {
     final index = _items.indexWhere((element) => element.id == id);
     _items.removeAt(index);
     notifyListeners();
   }
-
-
-
-
 }

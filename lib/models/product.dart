@@ -8,6 +8,25 @@ class Product {
   final String imageUrl;
   final ValueNotifier<bool> _isFavorite;
 
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'description': description,
+      'price': price,
+      'imageUrl': imageUrl,
+    };
+  }
+
+  static Product fromJson(Map<String, dynamic> json) {
+    return Product(
+      id: json['id'],
+      title: json['title'],
+      description: json['description'],
+      price: json['price'],
+      imageUrl: json['imageUrl'],
+    );
+  }
+
   Product({
     this.id,
     required this.title,
@@ -15,20 +34,19 @@ class Product {
     required this.price,
     required this.imageUrl,
     isFavorite = false,
-  }):_isFavorite = ValueNotifier(isFavorite);
+  }) : _isFavorite = ValueNotifier(isFavorite);
 
-  set isFavorite(bool newValue){
+  set isFavorite(bool newValue) {
     _isFavorite.value = newValue;
   }
 
-  bool get isFavorite{
+  bool get isFavorite {
     return _isFavorite.value;
   }
 
   ValueNotifier<bool> get isFavoriteListenable {
     return _isFavorite;
   }
-
 
   Product copyWith({
     String? id,
