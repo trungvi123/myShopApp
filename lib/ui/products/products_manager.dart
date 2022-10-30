@@ -34,6 +34,7 @@ class ProductsManager with ChangeNotifier {
     // Product(
     //   id: 'p4',
     //   title: 'A Pan',
+  
     //   description: 'Prepare any meal you want.',
     //   price: 49.99,
     //   imageUrl:
@@ -106,9 +107,13 @@ class ProductsManager with ChangeNotifier {
     }
   }
 
-  void toggleFavoriteStatus(Product product) {
+  Future<void> toggleFavoriteStatus(Product product) async {
     final savedStatus = product.isFavorite;
     product.isFavorite = !savedStatus;
+
+    if (!await _productsService.saveFavoriteStatus(product)) {
+      product.isFavorite = savedStatus;
+    }
   }
 
   
